@@ -6,7 +6,7 @@
 
 
 var stringifyJSON = function(obj) {
-  var result = [];
+  var result = "";
   if (typeof obj === "number"){
   	return obj.toString();
   }
@@ -25,17 +25,15 @@ var stringifyJSON = function(obj) {
   function ifArray(array, i){
     if (array.length === 0){
       return '[]';
-    }
-    while (result[i] === obj[i]){
-      i++;
 	}
     if (i === array.length){
-      return result;
+      return arrayResult;
     }
-    result[i] = array[i];
+    arrayResult[i] = array[i];
     return ifArray(array, i+1);
   };
   if (obj.constructor === Array){
+  	var arrayResult = [];
   	return ifArray(obj, 0);
   }
 };
