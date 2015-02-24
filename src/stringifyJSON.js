@@ -3,20 +3,10 @@
 
 // but you don't so you're going to write it from scratch:
 
-// var stringifyJSON = function(obj) {
-//   if (obj===true){
-//   	return 'true';
-//   } else if (obj.length===undefined){
-//   	return '{}';
-//   } else if (typeof obj === "string"){
-//   	return '"' + obj + '"';
-//   } else if (Array.isArray(t4)){
-
-//   }
-// };
 
 
 var stringifyJSON = function(obj) {
+  var result = [];
   if (typeof obj === "number"){
   	return obj.toString();
   }
@@ -32,20 +22,21 @@ var stringifyJSON = function(obj) {
   if (typeof obj === "string"){
   	return '"' + obj + '"';
   }
+  function ifArray(array, i){
+    if (array.length === 0){
+      return '[]';
+    }
+    while (result[i] === obj[i]){
+      i++;
+	}
+    if (i === array.length){
+      return result;
+    }
+    result[i] = array[i];
+    return ifArray(array, i+1);
+  };
   if (obj.constructor === Array){
-  	if (obj.length === 0){
-  		return '[]';
-  	}
-  	var result = [];
-  	var i = 0;
-  	while (result[i] === obj[i]){
-  		i++;
-  	}
-  	if (i === result.length){
-  		return '"' + result + '"';
-  	}
-  	result[i] = obj[i];
-  	return stringifyJSON(obj);
+  	return ifArray(obj, 0);
   }
 };
 
