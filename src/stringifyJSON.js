@@ -8,32 +8,41 @@
 var stringifyJSON = function(obj) {
   var result = "";
   if (typeof obj === "number"){
-  	return obj.toString();
+  	result += obj.toString();
+  	return result;
   }
   if (obj === null){
-  	return "null";
+  	result += "null";
+  	return result;
   }
   if (obj === true){
-  	return "true";
+  	result += "true";
+  	return result;
   } 
   if (obj === false){
-  	return "false";
+  	result += "false";
+  	return result;
   }
   if (typeof obj === "string"){
-  	return '"' + obj + '"';
+  	result += '"' + obj + '"';
+  	return result;
   }
   function ifArray(array, i){
     if (array.length === 0){
       return '[]';
 	}
     if (i === array.length){
-      return arrayResult;
+      return result;
     }
-    arrayResult[i] = array[i];
+    if (typeof array[i] === "string"){
+    	result += '["' + array[i] + '"]';
+    }
+    if (typeof array[i] === "number"){
+    	result += "[" + array[i] + "]";
+    }
     return ifArray(array, i+1);
   };
   if (obj.constructor === Array){
-  	var arrayResult = [];
   	return ifArray(obj, 0);
   }
 };
