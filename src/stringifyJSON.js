@@ -32,4 +32,20 @@ var stringifyJSON = function(obj) {
   if (typeof obj === "string"){
   	return '"' + obj + '"';
   }
+  if (obj.constructor === Array){
+  	if (obj.length === 0){
+  		return '[]';
+  	}
+  	var result = [];
+  	var i = 0;
+  	while (result[i] === obj[i]){
+  		i++;
+  	}
+  	if (i === result.length){
+  		return '"' + result + '"';
+  	}
+  	result[i] = obj[i];
+  	return stringifyJSON(obj);
+  }
 };
+
