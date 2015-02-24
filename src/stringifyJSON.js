@@ -3,6 +3,24 @@
 
 // but you don't so you're going to write it from scratch:
 
+// var stringifyJSON = function(obj) {
+//   if (obj===true){
+//   	return 'true';
+//   } else if (obj.length===undefined){
+//   	return '{}';
+//   } else if (typeof obj === "string"){
+//   	return '"' + obj + '"';
+//   } else if (Array.isArray(t4)){
+
+//   }
+// };
+
+
 var stringifyJSON = function(obj) {
-  // your code goes here
+  if (typeof obj === "number"){
+  	return obj.toString();
+  }
+  if (obj === null){
+  	return "null";
+  }
 };
