@@ -27,23 +27,38 @@ var stringifyJSON = function(obj) {
   	result += '"' + obj + '"';
   	return result;
   }
+  
   function ifArray(array, i){
-    if (array.length === 0){
-      return '[]';
-	}
-    if (i === array.length){
-      return result;
-    }
-    if (typeof array[i] === "string"){
-    	result += '["' + array[i] + '"]';
-    }
-    if (typeof array[i] === "number"){
-    	result += "[" + array[i] + "]";
-    }
-    return ifArray(array, i+1);
+  	if (i === 0){
+  		arrayResult += "[";
+  		if (typeof array[i] === "string"){
+  			arrayResult += '"' + array[i] + '"';
+  		}
+  		if (typeof array[i] === "number"){
+  			arrayResult += array[i];
+  		}
+  		timesRun++;
+  	}
+  	if (i !== 0){
+  		if (typeof array[i] === "string"){
+  			arrayResult += ',"' + array[i] + '"';
+  		}
+  		if (typeof array[i] === "number"){
+  			arrayResult += "," + array[i];
+  		}
+  	}
+  	if (i === array.length){
+  		arrayResult += "]";
+  		return arrayResult;
+  	}
+  	return ifArray(array, i+1);
   };
+
   if (obj.constructor === Array){
-  	return ifArray(obj, 0);
+  	var timesRun = 0;
+  	var arrayResult = "";
+  	result += ifArray(obj, 0);
+  	return result;
   }
 };
 
