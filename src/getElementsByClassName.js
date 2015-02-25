@@ -4,15 +4,37 @@
 // };
 
 // But instead we're going to implement it from scratch:
+
 var getElementsByClassName = function(className){
+	var className = className;
+	var nodeList = [];
 	var result = [];
 
-//	generate docNodeList
-	var docNodeList = [];
-	for (var i=0 ; i<document.body.childNodes.length ; i++){
-		docNodeList.push(document.body.childNodes[i]);
-	}
-	alert(docNodeList);
+//	function to generate nodeList
+	function genNodeList(collection){
+		for (var i=0 ; i<collection.childNodes.length ; i++){
+			var tempItem = collection.childNodes[i];
+			if (tempItem.childNodes.length > 0){
+				genNodeList(tempItem);
+			} else {
+				nodeList.push(tempItem);
+			}
+		}
+	};
+
+	genNodeList(document.body);
+
+//	function to search nodeList and push hits to result
+	function searchNodeList(term){
+		for (var i=0 ; i<nodeList.length ; i++){
+			var tempItem = nodeList[i];
+			if (tempItem.classList.contains(term)){
+				result.push(tempItem);
+			}
+		}
+	};
+
+	searchNodeList(className);
 
 	return result;
 };
