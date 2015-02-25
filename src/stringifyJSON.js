@@ -28,36 +28,39 @@ var stringifyJSON = function(obj) {
 		return result;
 	}
 
-	function ifArray(array, i){
-	  	if (i === 0){
-	  		arrayResult += "[";
-	  		if (typeof array[i] === "string"){
-	  			arrayResult += '"' + array[i] + '"';
-	  		}
-	  		if (typeof array[i] === "number"){
-	  			arrayResult += array[i];
-	  		}
-	  		timesRun++;
-	  	}
-	  	if (i !== 0){
-	  		if (typeof array[i] === "string"){
-	  			arrayResult += ',"' + array[i] + '"';
-	  		}
-	  		if (typeof array[i] === "number"){
-	  			arrayResult += "," + array[i];
-	  		}
-	  	}
-	  	if (i === array.length){
-	  		arrayResult += "]";
-	  		return arrayResult;
-	  	}
-	  	return ifArray(array, i+1);
+	function ifArray(array){
+		var arrayResult = "[";
+		for (var i=0 ; i<array.length ; i++){
+		  	if (i === 0){
+		  		if (typeof array[i] === "string"){
+		  			arrayResult += '"' + array[i] + '"';
+		  		}
+		  		if (typeof array[i] === "number"){
+		  			arrayResult += array[i];
+		  		}
+		  		if (typeof array[i] === "object"){
+		  			arrayResult += ifArray(array[i], i);
+		  		}
+		  	}
+		  	if (i !== 0){
+		  		if (typeof array[i] === "string"){
+		  			arrayResult += ',"' + array[i] + '"';
+		  		}
+		  		if (typeof array[i] === "number"){
+		  			arrayResult += "," + array[i];
+		  		}
+		  		if (typeof array[i] === "object"){
+		  			arrayResult += ",";
+		  			arrayResult += ifArray(array[i], i);
+		  		}
+		  	}
+		}
+		arrayResult += "]";
+		return arrayResult;
 	};
 
 	if (obj.constructor === Array){
-		var timesRun = 0;
-		var arrayResult = "";
-		result += ifArray(obj, 0);
+		result += ifArray(obj);
 		return result;
 	}
 };
