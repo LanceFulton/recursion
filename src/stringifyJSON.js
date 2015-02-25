@@ -32,8 +32,11 @@ var stringifyJSON = function(obj) {
 	  		if (typeof array[i] === "number"){
 	  			arrayResult += array[i];
 	  		}
-	  		if (typeof array[i] === "object"){
-	  			arrayResult += ifArray(array[i], i);
+	  		if (Array.isArray(array[i])){
+	  			arrayResult += ifArray(array[i]);
+	  		}
+	  		else if (typeof array[i] === "object"){
+	  			arrayResult += ifObject(array[i]);
 	  		}
 		}
 		arrayResult += "]";
@@ -48,8 +51,20 @@ var stringifyJSON = function(obj) {
 			}
 			if (typeof object[key] === "string"){
 				objectResult += '"' + key.toString() + '":"' + object[key] + '"';
-			} else {
-			objectResult += '"' + key.toString() + '":' + object[key];
+			} 
+			if (object[key] === null){
+				objectResult += '"' + key.toString() + '":' + "null";
+			}
+			if (typeof object[key] === "boolean"){
+				objectResult += '"' + key.toString() +  '":' + object[key].toString();
+			}
+			if (typeof object[key] === "object" && object[key] !== null && object[key].constructor !== Array){
+				objectResult += '"' + key.toString() + '":';
+				objectResult += ifObject(object[key]);
+			}
+			if (Array.isArray(object[key])){
+				objectResult += '"' + key.toString() + '":';
+				objectResult += ifArray(object[key]);
 			}
 		}
 		objectResult += "}";
