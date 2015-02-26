@@ -6,35 +6,22 @@
 // But instead we're going to implement it from scratch:
 
 var getElementsByClassName = function(className){
-	var className = className;
-	var nodeList = [];
 	var result = [];
 
-//	function to generate nodeList
-	function genNodeList(collection){
-		for (var i=0 ; i<collection.childNodes.length ; i++){
-			var tempItem = collection.childNodes[i];
-			if (tempItem.childNodes.length > 0){
-				genNodeList(tempItem);
-			} else {
-				nodeList.push(tempItem);
+	function findElements(collection, term){
+		if (collection.classList !== undefined){	//check if collection has classList
+			if (collection.classList.contains(term)){
+				result.push(collection);
+			}
+			if (collection.firstChild){		//check if collection has children
+				for (var i=0 ; i<collection.childNodes.length ; i++){
+					findElements(collection.childNodes[i], term)		//run function on children
+				}
 			}
 		}
 	};
 
-	genNodeList(document.body);
-
-//	function to search nodeList and push hits to result
-	function searchNodeList(term){
-		for (var i=0 ; i<nodeList.length ; i++){
-			var tempItem = nodeList[i];
-			if (tempItem.classList.contains(term)){
-				result.push(tempItem);
-			}
-		}
-	};
-
-	searchNodeList(className);
+	findElements(document.body, className);
 
 	return result;
 };
